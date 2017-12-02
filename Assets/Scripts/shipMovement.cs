@@ -1,16 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class shipMovement : MonoBehaviour {
 
-	// Use this for initialization
+    float torque;
+    float velocidadMovimiento;
+    public Rigidbody cuerpoRigido;
+
 	void Start () {
-		
+        //cuerpoRigido = GetComponent<Rigidbody>();
+        torque = 0.5F;
+        velocidadMovimiento = 0.2F;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	void FixedUpdate () {
+
+        // Girando
+        cuerpoRigido.AddTorque(transform.up * torque * Input.GetAxis("Horizontal"));
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            cuerpoRigido.AddForce(transform.forward * velocidadMovimiento, ForceMode.Impulse);
+            cuerpoRigido.AddTorque(Vector3.zero);
+        }
+
+    }
 }
