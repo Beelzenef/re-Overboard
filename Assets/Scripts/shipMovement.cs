@@ -2,26 +2,45 @@
 
 public class shipMovement : MonoBehaviour {
 
-    float torque;
-    float velocidadMovimiento;
-    public Rigidbody cuerpoRigido;
+    private Rigidbody cuerpoRigido;
 
-	void Start () {
-        //cuerpoRigido = GetComponent<Rigidbody>();
-        torque = 0.5F;
-        velocidadMovimiento = 0.2F;
-	}
-	
-	void FixedUpdate () {
+    public float velocidadMovimiento = 12f;                
+    public float velocidadGiro = 180f;
 
-        // Girando
-        cuerpoRigido.AddTorque(transform.up * torque * Input.GetAxis("Horizontal"));
+    private float inputDesplazamiento;       
+    private float inputGiro;       
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            cuerpoRigido.AddForce(transform.forward * velocidadMovimiento, ForceMode.Impulse);
-            cuerpoRigido.AddTorque(Vector3.zero);
-        }
 
+    private void Awake()
+    {
+        cuerpoRigido = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        inputDesplazamiento = Input.GetAxis("Vertical");
+        inputGiro = Input.GetAxis("Horizontal"); 
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+        Turn();
+    }
+
+
+    private void Move()
+    {
+        Vector3 movement = transform.forward * inputDesplazamiento * velocidadMovimiento * Time.deltaTime;
+
+        cuerpoRigido.MovePosition(cuerpoRigido.position + movement);
+    }
+
+
+    private void Turn()
+    {
+        float turn = inputGiro * velocidadGiro * Time.deltaTime;
+        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+        cuerpoRigido.MoveRotation(cuerpoRigido.rotation * turnRotation);
     }
 }
