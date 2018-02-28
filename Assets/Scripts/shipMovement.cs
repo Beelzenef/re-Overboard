@@ -16,6 +16,10 @@ public class shipMovement : MonoBehaviour {
     public Camera firstPersonCamera;
     public Camera overheadCamera;
 
+    private Rect sizeVentana = new Rect(15, 15, 200, 150);
+
+    private bool paused;
+
     private void Awake()
     {
         cuerpoRigido = GetComponent<Rigidbody>();
@@ -25,12 +29,17 @@ public class shipMovement : MonoBehaviour {
 
         StartCoroutine("CheckNearEnemies");
         StartCoroutine("CheckInput");
+
+        paused = false;
     }
 
     private void FixedUpdate()
     {
-        Move();
-        Turn();
+        if (!paused)
+        {
+            Move();
+            Turn();
+        }
     }
 
     private void Move()
@@ -65,16 +74,23 @@ public class shipMovement : MonoBehaviour {
     {
         while (true)
         {
-            inputDesplazamiento = Input.GetAxis("Vertical");
-            inputGiro = Input.GetAxis("Horizontal");
+            if (!paused)
+            {
+                inputDesplazamiento = Input.GetAxis("Vertical");
+                inputGiro = Input.GetAxis("Horizontal");
 
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                ShowFirstPersonView();
-            }
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                ShowOverheadView();
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    ShowFirstPersonView();
+                }
+                if (Input.GetKeyDown(KeyCode.O))
+                {
+                    ShowOverheadView();
+                }
+                if (Input.GetKeyDown(KeyCode.M))
+                {
+                    paused = true;
+                }
             }
 
             yield return null;
@@ -85,16 +101,44 @@ public class shipMovement : MonoBehaviour {
     {
         float maxDistanciaPermitida = 30F;
 
-        while (true)
+        while (true && !paused)
         {
             foreach (GameObject item in enemies)
             {
                 if (Vector3.Distance(transform.position, item.transform.position) < maxDistanciaPermitida)
                 {
-                    Debug.Log("Enemigo cercano");
+                    GameObject.FindGameObjectWithTag("Enemies").SendMessage("followShip");
                 }
             }
             yield return null;
         }
     }
+
+    void OnGUI()
+    {
+        if (paused)
+            sizeVentana = GUI.Window(0, sizeVentana, moverVentana, "Juego en pausa");
+    }
+
+    private void moverVentana(int id)
+    {
+        if (GUI.Button(new Rect(sizeVentana.width * 0.5f - 70, sizeVentana.width * 0.5f - 80, 150, 20),
+            "Continuar"))
+        {
+            paused = false;
+        }
+        if (GUI.Button(new Rect(sizeVentana.width * 0.5f - 70, sizeVentana.width * 0.5f - 50, 150, 20),
+            "Intrucciones"))
+        {
+            System.Diagnostics.Process.Start("https://github.com/Beelzenef/re-Overboard/wiki/Instrucciones");
+        }
+        if (GUI.Button(new Rect(sizeVentana.width * 0.5f - 70, sizeVentana.width * 0.5f - 20, 150, 20),
+             "Salir"))
+        {
+            Application.Quit();
+        }
+
+        GUI.DragWindow();
+    }
+
 }
