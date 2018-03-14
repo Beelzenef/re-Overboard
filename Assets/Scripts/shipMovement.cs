@@ -11,14 +11,14 @@ public class shipMovement : MonoBehaviour {
     private float inputDesplazamiento;       
     private float inputGiro;
 
-    private GameObject[] enemies;
-
     public Camera firstPersonCamera;
     public Camera overheadCamera;
 
     private Rect sizeVentana = new Rect(15, 15, 200, 150);
 
     private bool paused;
+
+    private GameObject[] enemies;
 
     private void Awake()
     {
@@ -27,7 +27,6 @@ public class shipMovement : MonoBehaviour {
 
         ShowOverheadView();
 
-        StartCoroutine("CheckNearEnemies");
         StartCoroutine("CheckInput");
 
         paused = false;
@@ -90,26 +89,14 @@ public class shipMovement : MonoBehaviour {
                 if (Input.GetKeyDown(KeyCode.M))
                 {
                     paused = true;
+
+                    foreach (GameObject item in enemies)
+                    {
+                        GameObject.FindGameObjectWithTag("Enemies").SendMessage("notifyPausedGame");
+                    }
                 }
             }
 
-            yield return null;
-        }
-    }
-
-    IEnumerator CheckNearEnemies()
-    {
-        float maxDistanciaPermitida = 30F;
-
-        while (true && !paused)
-        {
-            foreach (GameObject item in enemies)
-            {
-                if (Vector3.Distance(transform.position, item.transform.position) < maxDistanciaPermitida)
-                {
-                    GameObject.FindGameObjectWithTag("Enemies").SendMessage("followShip");
-                }
-            }
             yield return null;
         }
     }
