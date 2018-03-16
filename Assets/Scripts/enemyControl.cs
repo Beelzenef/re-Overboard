@@ -9,6 +9,8 @@ public class enemyControl : MonoBehaviour {
 
     bool paused;
 
+    int puntosDeVida = 3;
+
     public void Awake()
     {
         paused = false;
@@ -37,5 +39,17 @@ public class enemyControl : MonoBehaviour {
         paused = !paused;
     }
 
+    void OnTriggerEnter(Collider c)
+    {
+        if (c.gameObject.tag == "Bala")
+        {
+            puntosDeVida--;
+            Debug.Log(puntosDeVida);
+            if (puntosDeVida == 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 
 }

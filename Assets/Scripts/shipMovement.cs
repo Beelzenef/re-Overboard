@@ -20,6 +20,9 @@ public class shipMovement : MonoBehaviour {
 
     private GameObject[] enemies;
 
+    public GameObject balaPrefab;
+    public Transform spawnBalas;
+
     private void Awake()
     {
         cuerpoRigido = GetComponent<Rigidbody>();
@@ -86,6 +89,10 @@ public class shipMovement : MonoBehaviour {
                 {
                     ShowOverheadView();
                 }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    Shot();
+                }
                 if (Input.GetKeyDown(KeyCode.M))
                 {
                     paused = true;
@@ -126,6 +133,18 @@ public class shipMovement : MonoBehaviour {
         }
 
         GUI.DragWindow();
+    }
+
+    void Shot()
+    {
+        GameObject bala = (GameObject)Instantiate(
+            balaPrefab,
+            spawnBalas.position,
+            spawnBalas.rotation);
+
+        bala.GetComponent<Rigidbody>().velocity = bala.transform.forward * 20;
+
+        Destroy(bala, 2F);
     }
 
 }
