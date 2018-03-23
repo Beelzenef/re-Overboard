@@ -7,6 +7,8 @@ public class cameraControl : MonoBehaviour {
     public GameObject ship;
     private Vector3 posicionRelativa;
 
+    private float positionYAxis = 20f;
+
     void Start()
     {
         posicionRelativa = transform.position - ship.transform.position;
@@ -14,6 +16,6 @@ public class cameraControl : MonoBehaviour {
 
     void LateUpdate()
     {
-        transform.position = ship.transform.position + posicionRelativa;
+        transform.position = new Vector3(ship.transform.position.x, positionYAxis, ship.transform.position.z) + posicionRelativa;
     }
 }

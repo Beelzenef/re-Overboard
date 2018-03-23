@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class shipMovement : MonoBehaviour {
 
@@ -17,11 +19,20 @@ public class shipMovement : MonoBehaviour {
     private Rect sizeVentana = new Rect(15, 15, 200, 150);
 
     private bool paused;
+    private bool gameover;
 
     private GameObject[] enemies;
 
     public GameObject balaPrefab;
     public Transform spawnBalas;
+
+    public Text WeaponSelected;
+    public Text Ammo;
+    public Text Health;
+
+    private int ammoLeft;
+    private int health;
+    private int maxHealth;
 
     private void Awake()
     {
@@ -33,6 +44,12 @@ public class shipMovement : MonoBehaviour {
         StartCoroutine("CheckInput");
 
         paused = false;
+        gameover = false;
+
+        ammoLeft = 0;
+        health = 3;
+        maxHealth = 5;
+
     }
 
     private void FixedUpdate()
@@ -89,7 +106,7 @@ public class shipMovement : MonoBehaviour {
                 {
                     ShowOverheadView();
                 }
-                if (Input.GetKeyDown(KeyCode.L))
+                if (Input.GetKeyDown(KeyCode.L) && ammoLeft != 0)
                 {
                     Shot();
                 }
@@ -112,6 +129,10 @@ public class shipMovement : MonoBehaviour {
     {
         if (paused)
             sizeVentana = GUI.Window(0, sizeVentana, moverVentana, "Juego en pausa");
+
+        if (gameover)
+            if (GUI.Button(new Rect(10, 10, 40, 40), "Reiniciar"))
+                Restart();
     }
 
     private void moverVentana(int id)
@@ -143,8 +164,61 @@ public class shipMovement : MonoBehaviour {
             spawnBalas.rotation);
 
         bala.GetComponent<Rigidbody>().velocity = bala.transform.forward * 20;
+        ammoLeft--;
 
         Destroy(bala, 2F);
+
+        UpdateLabels();
     }
+
+    void OnTriggerEnter(Collider c)
+    {
+        // Pick up health
+        if (c.gameObject.tag == "Health" && health != maxHealth)
+        {
+            health++;
+            Destroy(c.gameObject);
+            UpdateLabels();
+        }
+
+        // Pick up ammo
+        if (c.gameObject.tag == "Ammo")
+        {
+            ammoLeft += 10;
+            Destroy(c.gameObject);
+            UpdateLabels();
+        }
+
+        // Attack!
+        if (c.gameObject.tag == "Enemies")
+        {
+            health--;
+            UpdateLabels();
+
+            if (health == 0)
+                GameOver();
+        }
+    }
+
+    void UpdateLabels ()
+    {
+        Health.text = health.ToString();
+        Ammo.text = ammoLeft.ToString();
+        WeaponSelected.text = "Cañon";
+    }
+
+    void GameOver()
+    {
+        gameover = true;
+        StopCoroutine("CheckInput");
+        inputDesplazamiento = 0;
+        inputGiro = 0;
+    }
+
+    void Restart()
+    {
+        SceneManager.LoadScene("main_tutorial");
+    }
+
 
 }
