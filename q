@@ -1,0 +1,65 @@
+[33mcommit 793abbb4eb2a8f9b1a7c78af525d09a82a899c48[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Elena G <elena.guzbla@gmail.com>
+Date:   Fri Apr 13 10:06:41 2018 +0200
+
+    'abandon ship', sailor spawner
+
+[33mcommit 22bf1c6840b4b82d76b2cca718d3ca508df6705d[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Elena G <elena.guzbla@gmail.com>
+Date:   Sun Apr 1 15:46:18 2018 +0200
+
+    Update README.md
+
+[33mcommit 17da9b3d7cb61fea178f1e68ac2f0bd558ff4996[m
+Author: Elena G <elena.guzbla@gmail.com>
+Date:   Fri Mar 23 09:12:44 2018 +0100
+
+    health, ammo mngment, main camera Y axis constraint...
+
+[33mcommit be4f62459a97b1ce098d55341de89aa9a0554663[m
+Author: Elena G <elena.guzbla@gmail.com>
+Date:   Fri Mar 16 10:09:43 2018 +0100
+
+    animations, shooting, destroy enemies...
+
+[33mcommit 55d8d6e028c2383d392b8a7e913ec14192795daa[m
+Author: Elena Guzmán Blanco <elena.guzbla@gmail.com>
+Date:   Wed Mar 14 11:08:56 2018 +0100
+
+    wip animations, fix enemies following
+
+[33mcommit ba98b176ae7c40aaf3cfaf39b6764aaa3a758bce[m
+Author: Elena Guzmán Blanco <elena.guzbla@gmail.com>
+Date:   Wed Feb 28 17:29:40 2018 +0100
+
+    menu + paused game
+
+[33mcommit b29ad2de7c08b2efc4bfb4d276f3ea0d617abbec[m
+Author: Elena Guzmán Blanco <elena.guzbla@gmail.com>
+Date:   Tue Feb 20 16:57:03 2018 +0100
+
+    add license, update readme, 3D models, camera switch, coroutines...
+
+[33mcommit 33fcc2b1e7774360a1924f87149a2a1f57b11b6b[m
+Author: Elena Guzmán Blanco <elena.guzbla@gmail.com>
+Date:   Thu Dec 14 19:04:08 2017 +0100
+
+    tank movement
+
+[33mcommit 4dffbe396ba5bcf7d6fe0b48ada6722960ce798d[m
+Author: Elena Guzmán Blanco <elena.guzbla@gmail.com>
+Date:   Sat Dec 2 19:40:07 2017 +0100
+
+    forgotten scene
+
+[33mcommit e9617cc41d0ddc94626d610d5d7dc808475d68a8[m
+Author: Elena Guzmán Blanco <elena.guzbla@gmail.com>
+Date:   Sat Dec 2 19:35:35 2017 +0100
+
+    materials, ship movement (WIP), readme
+
+[33mcommit f632eb458367d4b52531b984394d4cd93a74258e[m
+Author: Elena G <elena.guzbla@gmail.com>
+Date:   Fri Dec 1 07:38:26 2017 +0100
+
+    setup, first scene, prefab...

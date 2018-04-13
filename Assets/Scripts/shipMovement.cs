@@ -248,7 +248,7 @@ public class shipMovement : MonoBehaviour {
     void UpdateLabels ()
     {
         Health.text = health.ToString();
-        Debug.Log("Actualizando...");
+        Debug.Log(health.ToString());
         Ammo.text = ammoLeft.ToString();
         WeaponSelected.text = "Cañon";
     }
