@@ -26,6 +26,12 @@ public class shipMovement : MonoBehaviour {
     public GameObject balaPrefab;
     public Transform spawnBalas;
 
+    public GameObject sailorPrefab;
+    public Transform spawnSailor;
+    private bool jumpSide;
+    private Vector3 v3Left;
+    private Vector3 v3Right;
+
     public Text WeaponSelected;
     public Text Ammo;
     public Text Health;
@@ -50,6 +56,11 @@ public class shipMovement : MonoBehaviour {
         health = 3;
         maxHealth = 5;
 
+        jumpSide = true;
+        v3Left = new Vector3(-5, 5, 0);
+        v3Right = new Vector3(5, 5, 0);
+
+        UpdateLabels();
     }
 
     private void FixedUpdate()
@@ -109,6 +120,10 @@ public class shipMovement : MonoBehaviour {
                 if (Input.GetKeyDown(KeyCode.L) && ammoLeft != 0)
                 {
                     Shot();
+                }
+                if (Input.GetKeyDown(KeyCode.B))
+                {
+                    AbandonShip();
                 }
                 if (Input.GetKeyDown(KeyCode.M))
                 {
@@ -171,10 +186,33 @@ public class shipMovement : MonoBehaviour {
         UpdateLabels();
     }
 
+    void AbandonShip()
+    {
+        GameObject sailor = (GameObject)Instantiate(
+            sailorPrefab,
+            spawnSailor.position,
+            spawnSailor.rotation);
+
+        if (jumpSide)
+        {
+            sailor.GetComponent<Rigidbody>().AddForce(v3Left, ForceMode.Impulse);
+        }
+        else
+        {
+            sailor.GetComponent<Rigidbody>().AddForce(v3Right, ForceMode.Impulse);
+        }
+        jumpSide = !jumpSide;
+            
+
+        health--;
+        UpdateLabels();
+        CheckHealth();
+    }
+
     void OnTriggerEnter(Collider c)
     {
         // Pick up health
-        if (c.gameObject.tag == "Health" && health != maxHealth)
+        if ((c.gameObject.tag == "Health") && health != maxHealth)
         {
             health++;
             Destroy(c.gameObject);
@@ -189,20 +227,28 @@ public class shipMovement : MonoBehaviour {
             UpdateLabels();
         }
 
+        // Gather sailors
+
         // Attack!
         if (c.gameObject.tag == "Enemies")
         {
             health--;
             UpdateLabels();
 
-            if (health == 0)
-                GameOver();
+            CheckHealth();
         }
+    }
+
+    void CheckHealth()
+    {
+        if (health == 0)
+            GameOver();
     }
 
     void UpdateLabels ()
     {
         Health.text = health.ToString();
+        Debug.Log("Actualizando...");
         Ammo.text = ammoLeft.ToString();
         WeaponSelected.text = "Cañon";
     }
